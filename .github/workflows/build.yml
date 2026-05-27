@@ -1,0 +1,4 @@
+name: Build Project
+
+on:
+  workflow_dispatch:
