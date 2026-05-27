@@ -18,28 +18,28 @@ jobs:
     name: Build Project
     runs-on: ubuntu-latest
     steps:
-      # Stop Docker before storage change
-      - name: Stop Docker before storage change
-        run: sudo systemctl stop docker.service docker.socket
-
-      # Free up disk space
       - name: Maximize Build Space
         uses: easimon/maximize-build-space@v10
         with:
           root-reserve-mb: 5120
           swap-size-mb: 1024
-          build-mount-path: '/var/lib/docker'
-          overswap: 'false' 
+          build-mount-path: '/mnt/big-disk'
           remove-dotnet: 'true'
           remove-android: 'true'
           remove-haskell: 'true'
           remove-codeql: 'true'
-          remove-docker-images: 'true'
+          remove-docker-images: 'false' 
       
-      # Start Docker again
-      - name: Restart Docker daemon
+      - name: Move Docker to Big Disk
         run: |
+          sudo systemctl stop docker.service docker.socket
+          
+          sudo mv /var/lib/docker /mnt/big-disk/docker
+          
+          sudo ln -s /mnt/big-disk/docker /var/lib/docker
+          
           sudo systemctl start docker.service
+          
           sleep 3
           docker info
           
