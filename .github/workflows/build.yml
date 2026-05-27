@@ -18,31 +18,19 @@ jobs:
     name: Build Project
     runs-on: ubuntu-latest
     steps:
-      - name: Maximize Build Space
-        uses: easimon/maximize-build-space@v10
-        with:
-          root-reserve-mb: 5120
-          swap-size-mb: 1024
-          build-mount-path: '/mnt/big-disk'
-          remove-dotnet: 'true'
-          remove-android: 'true'
-          remove-haskell: 'true'
-          remove-codeql: 'true'
-          remove-docker-images: 'false' 
+      # Cleanup
+      - name: Free Disk Space
+          run: |
+            echo "Space before cleanup"
+            df -h /
+            
+            sudo rm -rf /usr/local/lib/android
+            sudo rm -rf /usr/share/dotnet
+            sudo rm -rf /opt/ghc
+            
+            echo "Space after cleanup"
+            df -h /
       
-      - name: Move Docker to Big Disk
-        run: |
-          sudo systemctl stop docker.service docker.socket
-          
-          sudo mv /var/lib/docker /mnt/big-disk/docker
-          
-          sudo ln -s /mnt/big-disk/docker /var/lib/docker
-          
-          sudo systemctl start docker.service
-          
-          sleep 3
-          docker info
-          
       # Checkout    
       - name: Checkout repository
         uses: actions/checkout@v4
