@@ -3,14 +3,10 @@ name: Build Project
 on:
   push:
     branches:
-      - 'release'
-    tags:
-      - '*'
+      - 'main'
   pull_request:
     branches:
-      - 'release'
-    tags:
-      - '*'
+      - 'main'
   workflow_dispatch:
     
 jobs:
