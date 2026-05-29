@@ -1,7 +1,6 @@
 name: Build Project
 
 on:
-  workflow_dispatch:
   push:
     branches:
       - 'release'
@@ -12,62 +11,37 @@ on:
       - 'release'
     tags:
       - '*'
-
+  workflow_dispatch:
+    
 jobs:
-  buildWebPlatform:
-    name: Build Project
+  buildForAllPlatforms:
+    name: Build for ${{ matrix.targetPlatform }}
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        targetPlatform:
+          - StandaloneWindows64
+          - StandaloneLinux64
+          - WebGL
     steps:
-      # Cleanup
-      - name: Free Disk Space
-        run: |
-          echo "Space before cleanup"
-          df -h /
-          
-          sudo rm -rf /usr/local/lib/android
-          sudo rm -rf /usr/share/dotnet
-          sudo rm -rf /opt/ghc
-          
-          echo "Space after cleanup"
-          df -h /
-      
-      # Checkout    
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
+          fetch-depth: 0
           lfs: true
-
-      # Cache
       - uses: actions/cache@v3
         with:
           path: Library
-          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
-          restore-keys: |
-            Library-
-      
-      #      # Test
-      #      - name: Run tests
-      #        uses: game-ci/unity-test-runner@v4
-      #        env:
-      #          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-      #          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-      #          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-      #        with:
-      #          githubToken: ${{ secrets.GITHUB_TOKEN }}
-
-      # Build
-      - name: Build project
-        uses: game-ci/unity-builder@v4
+          key: Library-${{ matrix.targetPlatform }}
+          restore-keys: Library-
+      - uses: game-ci/unity-builder@v4
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
-          targetPlatform: WebGL
-          customParameters: -NodeGraphSetup.ForceRebuild=1
-
-      # Output
+          targetPlatform: ${{ matrix.targetPlatform }}
       - uses: actions/upload-artifact@v4
         with:
-          name: BuildWebPlatform
-          path: build
+          name: Build-${{ matrix.targetPlatform }}
+          path: build/${{ matrix.targetPlatform }}
