@@ -40,5 +40,5 @@ jobs:
           targetPlatform: ${{ matrix.targetPlatform }}
       - uses: actions/upload-artifact@v4
         with:
-          name: Build-${{ matrix.targetPlatform-$(git rev-parse --short "$GITHUB_SHA") }}
+          name: Build-${{ matrix.targetPlatform }}-$(git rev-parse --short "$GITHUB_SHA")
           path: build/${{ matrix.targetPlatform }}
