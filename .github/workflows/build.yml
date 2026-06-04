@@ -38,7 +38,11 @@ jobs:
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           targetPlatform: ${{ matrix.targetPlatform }}
+      - name: Extract short sha 
+        shell: bash
+        run: |
+          echo "SHORT_SHA=$(git rev-parse --short "$GITHUB_SHA")" >> $GITHUB_ENV
       - uses: actions/upload-artifact@v4
         with:
-          name: Build-${{ matrix.targetPlatform }}-$(git rev-parse --short "$GITHUB_SHA")
+          name: Build-${{ matrix.targetPlatform }}-${{ env.SHORT_SHA }}
           path: build/${{ matrix.targetPlatform }}
