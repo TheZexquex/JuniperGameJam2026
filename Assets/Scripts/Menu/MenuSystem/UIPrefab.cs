@@ -19,7 +19,7 @@ namespace Menu.MenuSystem
         
         public virtual void InstantiatePrefab(Transform parent)
         {
-            var prefab = Resources.Load<GameObject>(PrefabPath);
+            var prefab = UnityEngine.Resources.Load<GameObject>(PrefabPath);
             Instance = Object.Instantiate(prefab, parent);
         }
     }

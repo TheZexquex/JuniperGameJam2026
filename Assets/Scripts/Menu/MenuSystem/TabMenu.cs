@@ -16,7 +16,7 @@ namespace Menu.MenuSystem
 
         public void Draw()
         {
-            var canvas = Resources.Load<Canvas>("Prefabs/UI/Tabbed/TabbedCanvas");
+            var canvas = UnityEngine.Resources.Load<Canvas>("Prefabs/UI/Tabbed/TabbedCanvas");
             var canvasInstance = Object.Instantiate(canvas);
             var menu = canvasInstance.transform.Find("Menu").gameObject;
             var tabsContainer = menu.transform.Find("Tabs").gameObject;
