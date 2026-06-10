@@ -8,7 +8,7 @@ namespace Menu.MenuSystem
     public class SliderPageEntry : PageEntry<float>
     {
         public SliderPageEntry(string label, string description, UnityAction<float> onValueChanged) 
-            : base("SliderEntry", label, description, onValueChanged)
+            : base("EntrySlider", label, description, onValueChanged)
         {
         }
 

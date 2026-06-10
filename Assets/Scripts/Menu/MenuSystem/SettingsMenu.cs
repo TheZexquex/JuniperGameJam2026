@@ -20,7 +20,7 @@ namespace Menu.MenuSystem
             {
                 Debug.Log("Set Master Music to " + value);
             }));
-            audioPage.AddEntry(new TogglePageEntry("Mute Music", "Mute the Music", (bool value) =>
+            audioPage.AddEntry(new OptionPageEntry("Mute Music", "Mute the Music", (bool value) =>
             {
                 Debug.Log("Set Music Mute to " + value);
             }));
@@ -38,7 +38,7 @@ namespace Menu.MenuSystem
             
             var controlsTab = new Tab("Controls");
             var controlsPage = new Page();
-            controlsPage.AddEntry(new TogglePageEntry("Invert Mouse", "Invert the Mouse", (bool value) =>
+            controlsPage.AddEntry(new OptionPageEntry("Invert Mouse", "Invert the Mouse", (bool value) =>
             {
                 Debug.Log("Set Mouse Inversion to " + value);
             }));

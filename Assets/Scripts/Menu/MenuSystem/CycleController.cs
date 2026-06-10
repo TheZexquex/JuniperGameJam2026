@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.UI;
 
@@ -10,7 +11,7 @@ using UnityEngine.UI;
 
 namespace Resources.Prefabs.UI.Common
 {
-    public class CycleButtonController : MonoBehaviour
+    public class CycleController : MonoBehaviour
     {
         [Header("UI Elements")] [SerializeField]
         private TextMeshProUGUI buttonText;
@@ -22,6 +23,7 @@ namespace Resources.Prefabs.UI.Common
         private Button _nextButton;
 
         private int currentIndex = 0;
+        private UnityEvent<string> onOptionChange { get; } = new UnityEvent<string>();
 
         public string CurrentSelection => options[currentIndex];
         public int CurrentIndex => currentIndex;
@@ -57,7 +59,7 @@ namespace Resources.Prefabs.UI.Common
             Debug.Log("Prev");
             currentIndex = (currentIndex - 1 + options.Count) % options.Count;
             UpdateUI();
-            OnOptionChanged(options[currentIndex]);
+            InvokeEvent();
         }
 
         protected void OnNext()
@@ -65,14 +67,14 @@ namespace Resources.Prefabs.UI.Common
             Debug.Log("Next");
             currentIndex = (currentIndex + 1) % options.Count;
             UpdateUI();
-            OnOptionChanged(options[currentIndex]);
+            InvokeEvent();
         }
 
         protected void OnSelectIndex(int index)
         {
             currentIndex = index;
             UpdateUI();
-            OnOptionChanged(options[currentIndex]);
+            InvokeEvent();
         }
 
         private void UpdateUI()
@@ -90,9 +92,10 @@ namespace Resources.Prefabs.UI.Common
                 }
             }
         }
-
-        private void OnOptionChanged(string selectedOption)
+        
+        private void InvokeEvent()
         {
+            onOptionChange?.Invoke(options[currentIndex]);
         }
     }
 }
