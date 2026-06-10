@@ -23,7 +23,7 @@ namespace Resources.Prefabs.UI.Common
         private Button _nextButton;
 
         private int currentIndex = 0;
-        private UnityEvent<string> onOptionChange { get; } = new UnityEvent<string>();
+        public UnityEvent<string> onOptionChange { get; } = new UnityEvent<string>();
 
         public string CurrentSelection => options[currentIndex];
         public int CurrentIndex => currentIndex;

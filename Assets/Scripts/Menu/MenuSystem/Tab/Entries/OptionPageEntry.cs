@@ -1,12 +1,12 @@
+using Resources.Prefabs.UI.Common;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.UI;
 
 namespace Menu.MenuSystem
 {
-    public class OptionPageEntry : PageEntry<bool>
+    public class OptionPageEntry : PageEntry<string>
     {
-        public OptionPageEntry(string label, string description, UnityAction<bool> onValueChanged) 
+        public OptionPageEntry(string label, string description, UnityAction<string> onValueChanged) 
             : base("EntryOptions", label, description, onValueChanged)
         {
         }
@@ -14,9 +14,10 @@ namespace Menu.MenuSystem
         public override void InstantiatePrefab(Transform parent)
         {
             base.InstantiatePrefab(parent);
-            var switchElement = parent.Find("Switch").GetComponent<CycleController>();
+            Debug.Log(parent);
+            var switchElement = Instance.transform.Find("Switch").GetComponent<CycleController>();
             
-            switchElement.on.AddListener(OnValueChanged);
+            switchElement.onOptionChange.AddListener(OnValueChanged);
         }
     }
 }
