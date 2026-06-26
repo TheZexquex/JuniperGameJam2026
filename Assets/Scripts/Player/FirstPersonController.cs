@@ -60,6 +60,7 @@ public class FirstPersonController : MonoBehaviour
     [SerializeField] private float fallTimeout = 0.15f;
 
     public bool IsMoving { get; private set; } = false;
+    public Vector3 MovementVelocity { get; private set; }
 
     private void Update()
     {
@@ -110,6 +111,9 @@ public class FirstPersonController : MonoBehaviour
 
         _characterController.Move(inputDirection.normalized * (targetSpeed * Time.deltaTime) +
                                   new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+        
+        MovementVelocity = _characterController.velocity;
+        
         if (_hasAnimator)
         {
             _animationVelocityX = Mathf.Lerp(_animationVelocityX, inputManager.Move.x * targetSpeed,
